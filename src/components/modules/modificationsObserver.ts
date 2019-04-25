@@ -31,7 +31,7 @@ export default class ModificationsObserver extends Module {
    * Used to prevent several mutation callback execution
    * @type {Function}
    */
-  private mutationDebouncer = _.debounce( () => {
+  private mutationDebouncer = _.debounce(() => {
     this.checkEmptiness();
     this.config.onChange();
   }, ModificationsObserver.DebounceTimer);
@@ -41,7 +41,9 @@ export default class ModificationsObserver extends Module {
    */
   public destroy() {
     this.mutationDebouncer = null;
-    this.observer.disconnect();
+    if (this.observer) {
+      this.observer.disconnect();
+    }
     this.observer = null;
   }
 
@@ -53,7 +55,7 @@ export default class ModificationsObserver extends Module {
     /**
      * wait till Browser render Editor's Blocks
      */
-    window.setTimeout( () => {
+    window.setTimeout(() => {
       this.setObserver();
     }, 1000);
   }
